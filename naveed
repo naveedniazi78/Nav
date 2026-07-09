@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Employee Non-Productive Activities Form</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#f4f7fb;
+    padding:30px;
+}
+
+.container{
+    max-width:1100px;
+    margin:auto;
+    background:#fff;
+    border-radius:8px;
+    padding:25px;
+    box-shadow:0 2px 10px rgba(0,0,0,.15);
+}
+
+h2{
+    text-align:center;
+    color:#003366;
+    margin-bottom:20px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+td{
+    padding:8px;
+    vertical-align:top;
+}
+
+label{
+    font-weight:bold;
+}
+
+input,select,textarea{
+    width:100%;
+    padding:8px;
+    border:1px solid #ccc;
+    border-radius:4px;
+}
+
+textarea{
+    height:70px;
+}
+
+.result{
+    background:#eef7ff;
+    font-weight:bold;
+    color:#003366;
+}
+
+button{
+    padding:12px 25px;
+    border:none;
+    border-radius:5px;
+    background:#007bff;
+    color:#fff;
+    cursor:pointer;
+    margin-top:15px;
+}
+
+button:hover{
+    background:#0056b3;
+}
+
+.index-table{
+    margin-top:30px;
+}
+
+.index-table th{
+    background:#003366;
+    color:#fff;
+}
+
+.index-table th,
+.index-table td{
+    border:1px solid #ccc;
+    padding:8px;
+    text-align:left;
+}
+
+.footer{
+    margin-top:20px;
+    font-size:13px;
+    color:#555;
+}
+</style>
+
+<script>
+
+function calculate(){
+
+let total=parseFloat(document.getElementById("total").value)||0;
+let non=parseFloat(document.getElementById("non").value)||0;
+
+if(total<=0){
+return;
+}
+
+if(non>total){
+alert("Non-productive hours cannot exceed total working hours.");
+return;
+}
+
+let productive=total-non;
+
+let np=((non/total)*100).toFixed(2);
+let pp=((productive/total)*100).toFixed(2);
+
+document.getElementById("productive").value=productive.toFixed(2);
+document.getElementById("npIndex").value=np+" %";
+document.getElementById("prodIndex").value=pp+" %";
+
+}
+
+</script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Employee Non-Productive Activities Report</h2>
+
+<table>
+
+<tr>
+
+<td>
+<label>Employee Name</label>
+<input type="text">
+</td>
+
+<td>
+<label>Employee ID</label>
+<input type="text">
+</td>
+
+<td>
+<label>Department</label>
+<input type="text">
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+<label>Date</label>
+<input type="date">
+</td>
+
+<td>
+<label>Supervisor</label>
+<input type="text">
+</td>
+
+<td>
+<label>Shift</label>
+
+<select>
+<option>Morning</option>
+<option>Evening</option>
+<option>Night</option>
+</select>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+<label>Total Working Hours</label>
+<input type="number" id="total" value="9" step="0.25" onkeyup="calculate()" onchange="calculate()">
+</td>
+
+<td>
+<label>Non-Productive Hours</label>
+<input type="number" id="non" value="0" step="0.25" onkeyup="calculate()" onchange="calculate()">
+</td>
+
+<td>
+<label>Reason Code</label>
+
+<select>
+
+<option value="">Select Reason</option>
+
+<option>01 - Waiting for Work</option>
+<option>02 - Waiting for Approval</option>
+<option>03 - Waiting for Information</option>
+<option>04 - System Downtime</option>
+<option>05 - Equipment Failure</option>
+<option>06 - Network Issue</option>
+<option>07 - Power Failure</option>
+<option>08 - Meeting</option>
+<option>09 - Training</option>
+<option>10 - Administrative Work</option>
+<option>11 - Tea/Lunch Break</option>
+<option>12 - Personal Activity</option>
+<option>13 - Leave</option>
+<option>14 - Rework</option>
+<option>15 - Waiting for Customer</option>
+<option>16 - Waiting for Vendor</option>
+<option>17 - Resource Unavailable</option>
+<option>18 - Shift Handover</option>
+<option>19 - Business Travel</option>
+<option>20 - Audit / Compliance</option>
+<option>21 - Security Issue</option>
+<option>22 - Quality Inspection</option>
+<option>23 - Idle Time</option>
+<option>24 - Other</option>
+
+</select>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td colspan="3">
+
+<label>Description / Root Cause</label>
+
+<textarea placeholder="Describe why the employee was non-productive..."></textarea>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+<label>Productive Hours</label>
+<input class="result" id="productive" readonly>
+</td>
+
+<td>
+<label>Non-Productive Index</label>
+<input class="result" id="npIndex" readonly>
+</td>
+
+<td>
+<label>Productivity Index</label>
+<input class="result" id="prodIndex" readonly>
+</td>
+
+</tr>
+
+<tr>
+
+<td colspan="3" align="center">
+
+<button type="button" onclick="calculate()">Calculate</button>
+
+<button type="reset">Reset</button>
+
+</td>
+
+</tr>
+
+</table>
+
+<h3 style="margin-top:30px;">Calculation Formula</h3>
+
+<table class="index-table">
+
+<tr>
+<th>Formula</th>
+<th>Example</th>
+<th>Result</th>
+</tr>
+
+<tr>
+<td><b>Non-Productive Index = (Non-Productive Hours ÷ Total Working Hours) × 100</b></td>
+<td>(2 ÷ 9) × 100</td>
+<td>22.22%</td>
+</tr>
+
+<tr>
+<td><b>Productive Hours = Total Working Hours − Non-Productive Hours</b></td>
+<td>9 − 2</td>
+<td>7 Hours</td>
+</tr>
+
+<tr>
+<td><b>Productivity Index = (Productive Hours ÷ Total Working Hours) × 100</b></td>
+<td>(7 ÷ 9) × 100</td>
+<td>77.78%</td>
+</tr>
+
+</table>
+
+<h3 style="margin-top:30px;">Reason Codes</h3>
+
+<table class="index-table">
+
+<tr>
+<th>Code</th>
+<th>Reason</th>
+</tr>
+
+<tr><td>01</td><td>Waiting for Work</td></tr>
+<tr><td>02</td><td>Waiting for Approval</td></tr>
+<tr><td>03</td><td>Waiting for Information</td></tr>
+<tr><td>04</td><td>System Downtime</td></tr>
+<tr><td>05</td><td>Equipment Failure</td></tr>
+<tr><td>06</td><td>Network Issue</td></tr>
+<tr><td>07</td><td>Power Failure</td></tr>
+<tr><td>08</td><td>Meeting</td></tr>
+<tr><td>09</td><td>Training</td></tr>
+<tr><td>10</td><td>Administrative Work</td></tr>
+<tr><td>11</td><td>Tea/Lunch Break</td></tr>
+<tr><td>12</td><td>Personal Activity</td></tr>
+<tr><td>13</td><td>Leave</td></tr>
+<tr><td>14</td><td>Rework</td></tr>
+<tr><td>15</td><td>Waiting for Customer</td></tr>
+<tr><td>16</td><td>Waiting for Vendor</td></tr>
+<tr><td>17</td><td>Resource Unavailable</td></tr>
+<tr><td>18</td><td>Shift Handover</td></tr>
+<tr><td>19</td><td>Business Travel</td></tr>
+<tr><td>20</td><td>Audit / Compliance</td></tr>
+<tr><td>21</td><td>Security Issue</td></tr>
+<tr><td>22</td><td>Quality Inspection</td></tr>
+<tr><td>23</td><td>Idle Time</td></tr>
+<tr><td>24</td><td>Other</td></tr>
+
+</table>
+
+<div class="footer">
+<b>Example:</b><br><br>
+Working Hours = <b>9 Hours</b><br>
+Non-Productive Hours = <b>2 Hours</b><br><br>
+
+Non-Productive Index = (2 ÷ 9) × 100 = <b>22.22%</b><br>
+Productive Hours = 9 − 2 = <b>7 Hours</b><br>
+Productivity Index = (7 ÷ 9) × 100 = <b>77.78%</b>
+</div>
+
+</div>
+
+</body>
+</html>
